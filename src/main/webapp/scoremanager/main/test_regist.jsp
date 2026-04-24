@@ -7,7 +7,7 @@
         .search-form { display: flex; gap: 15px; align-items: flex-end; margin-bottom: 20px; padding: 15px; border: 1px solid #0d6efd; border-radius: 5px; }
         .search-item { display: flex; flex-direction: column; }
         .search-item label { font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; }
-        .point-input { width: 70px; }
+        .point-input { width: 80px; }
     </style>
 
     <h2 class="mb-4">成績管理</h2>
@@ -16,8 +16,8 @@
         <div class="alert alert-danger">${errors}</div>
     </c:if>
 
-    <%-- 送信先を登録用のアクションに変更 --%>
     <form action="TestRegist.action" method="post" class="search-form bg-light">
+        <%-- 入学年度プルダウン --%>
         <div class="search-item">
             <label>入学年度</label>
             <select name="f1" class="form-select form-select-sm">
@@ -28,6 +28,7 @@
             </select>
         </div>
 
+        <%-- クラスプルダウン --%>
         <div class="search-item">
             <label>クラス</label>
             <select name="f2" class="form-select form-select-sm">
@@ -38,6 +39,7 @@
             </select>
         </div>
 
+        <%-- 科目プルダウン --%>
         <div class="search-item">
             <label>科目</label>
             <select name="f3" class="form-select form-select-sm">
@@ -48,6 +50,7 @@
             </select>
         </div>
 
+        <%-- 回数プルダウン --%>
         <div class="search-item">
             <label>回数</label>
             <select name="f4" class="form-select form-select-sm">
@@ -63,9 +66,9 @@
     <c:if test="${not empty tests}">
         <div class="mt-4">
             <p class="fw-bold">科目：${subject.name} (${param.f4}回)</p>
-            <%-- 点数保存用の送信先 --%>
+            
             <form action="TestRegistExecute.action" method="post">
-                <%-- 保存時に必要なパラメータを隠しデータで送る --%>
+                <%-- 登録時に必要な情報をhiddenで送信 --%>
                 <input type="hidden" name="f1" value="${param.f1}">
                 <input type="hidden" name="f2" value="${param.f2}">
                 <input type="hidden" name="f3" value="${param.f3}">
@@ -84,14 +87,14 @@
                     <tbody>
                         <c:forEach var="t" items="${tests}">
                             <tr>
-                                <td>${t.entYear}</td>
-                                <td>${t.classNum}</td>
-                                <td>${t.studentNo}</td>
-                                <td>${t.studentName}</td>
+                                <td>${param.f1}</td>
+                                <td>${param.f2}</td>
+                                <%-- StudentBean経由で値を取得 --%>
+                                <td>${t.student.no}</td>
+                                <td>${t.student.name}</td>
                                 <td>
-                                    <%-- inputのnameに学生番号を付けて、後で誰の点数か判別できるようにする --%>
-                                    <input type="number" name="point_${t.studentNo}" 
-                                           value="${t.points[param.f4]}" 
+                                    <input type="number" name="point_${t.student.no}" 
+                                           value="<c:if test="${t.point != -1}">${t.point}</c:if>" 
                                            class="form-control form-control-sm point-input" min="0" max="100">
                                 </td>
                             </tr>
@@ -104,7 +107,6 @@
     </c:if>
 </c:set>
 
-<%-- 共通テンプレートの呼び出し --%>
 <c:import url="/common/base.jsp">
     <c:param name="title" value="成績管理 - 得点管理システム" />
     <c:param name="content" value="${content}" />
