@@ -11,13 +11,13 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet(urlPatterns = {"*.action"})
 public class FrontController extends HttpServlet {
 
-    @Override
+	@Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            // パスを取得（例：scoremanager/main/StudentList.action）
+            // パスを取得
             String path = request.getServletPath().substring(1);
             
-            // ファイル名部分をクラス名に変換（例：StudentListAction）
+            // ファイル名部分をクラス名に変換
             String name = path.replace(".a", "A").replace('/', '.');
             
             // クラス名からインスタンスを生成して実行
@@ -25,9 +25,12 @@ public class FrontController extends HttpServlet {
             action.execute(request, response);
             
         } catch (Exception e) {
+            // エラーをログ（コンソール）に出力
             e.printStackTrace();
-            // エラー時はとりあえずエラーページへ（必要に応じて）
-            // request.getRequestDispatcher("/common/error.jsp").forward(request, response);
+            
+            // 画像の指示通り、エラーが発生した時にエラーページへ飛ばす
+            // パスは環境に合わせて調整してね（URLが localhost:8080/kadai/error.jsp なら以下でOK）
+            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 
