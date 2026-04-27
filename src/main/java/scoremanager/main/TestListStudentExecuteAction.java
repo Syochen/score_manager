@@ -14,19 +14,25 @@ public class TestListStudentExecuteAction extends Action {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
         String studentNo = req.getParameter("f4");
+
+        // 入力チェック（シーケンス図のalt [学生番号が未入力の場合]）
+        if (studentNo == null || studentNo.equals("")) {
+            req.setAttribute("errors", "このフィールドを入力してください。");
+            new TestListAction().execute(req, res);
+            return;
+        }
+
+        // 学生情報の取得
         StudentDao sDao = new StudentDao();
         Student student = sDao.get(studentNo);
-        
-        if (student != null) {
-            TestListStudentDao tlsDao = new TestListStudentDao();
-            List<TestListStudent> list = tlsDao.filter(student);
-            req.setAttribute("student", student);
-            req.setAttribute("tests", list);
-        } else {
-            req.setAttribute("errors", "学生情報が存在しませんでした");
-        }
-        
-        // 再度検索画面の初期データをセットするActionを呼ぶか、直接JSPへ
-        new TestRegistAction().execute(req, res);
+
+        // 学生別成績の取得
+        TestListStudentDao tlsDao = new TestListStudentDao();
+        List<TestListStudent> tests = tlsDao.filter(student);
+
+        // 結果をセットして一覧画面（学生別）へ
+        req.setAttribute("tests_student", tests);
+        req.setAttribute("student", student);
+        req.getRequestDispatcher("test_list_student.jsp").forward(req, res);
     }
 }
