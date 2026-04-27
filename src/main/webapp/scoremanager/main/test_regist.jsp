@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<%-- メインコンテンツの定義 --%>
 <c:set var="content" scope="request">
     <style>
         .search-form { display: flex; gap: 15px; align-items: flex-end; margin-bottom: 20px; padding: 15px; border: 1px solid #0d6efd; border-radius: 5px; }
@@ -16,8 +15,8 @@
         <div class="alert alert-danger">${errors}</div>
     </c:if>
 
+    <%-- 修正：actionを相対パス（パッケージ名なし）に変更 --%>
     <form action="TestRegist.action" method="post" class="search-form bg-light">
-        <%-- 入学年度プルダウン --%>
         <div class="search-item">
             <label>入学年度</label>
             <select name="f1" class="form-select form-select-sm">
@@ -28,7 +27,6 @@
             </select>
         </div>
 
-        <%-- クラスプルダウン --%>
         <div class="search-item">
             <label>クラス</label>
             <select name="f2" class="form-select form-select-sm">
@@ -39,7 +37,6 @@
             </select>
         </div>
 
-        <%-- 科目プルダウン --%>
         <div class="search-item">
             <label>科目</label>
             <select name="f3" class="form-select form-select-sm">
@@ -50,7 +47,6 @@
             </select>
         </div>
 
-        <%-- 回数プルダウン --%>
         <div class="search-item">
             <label>回数</label>
             <select name="f4" class="form-select form-select-sm">
@@ -68,7 +64,7 @@
             <p class="fw-bold">科目：${subject.name} (${param.f4}回)</p>
             
             <form action="TestRegistExecute.action" method="post">
-                <%-- 登録時に必要な情報をhiddenで送信 --%>
+                <%-- 条件を引き継ぐためのhidden --%>
                 <input type="hidden" name="f1" value="${param.f1}">
                 <input type="hidden" name="f2" value="${param.f2}">
                 <input type="hidden" name="f3" value="${param.f3}">
@@ -89,7 +85,6 @@
                             <tr>
                                 <td>${param.f1}</td>
                                 <td>${param.f2}</td>
-                                <%-- StudentBean経由で値を取得 --%>
                                 <td>${t.student.no}</td>
                                 <td>${t.student.name}</td>
                                 <td>
