@@ -16,31 +16,33 @@ public class TestListStudentExecuteAction extends Action {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
         String studentNo = req.getParameter("f4");
-        req.setAttribute("f4", studentNo); // 入力した番号を保持
+        req.setAttribute("f4", studentNo); 
 
         HttpSession session = req.getSession();
         Teacher teacher = (Teacher) session.getAttribute("user");
 
-        // プルダウン等の共通データ準備（TestListActionにある共通処理）
         TestListAction.prepareCommonData(req, teacher);
 
         if (studentNo != null && !studentNo.isEmpty()) {
             StudentDao sDao = new StudentDao();
             Student student = sDao.get(studentNo);
 
-            req.setAttribute("done_st", true); // 検索実行フラグ
+            req.setAttribute("done_st", true); 
 
-            // 学生が存在し、かつ学校コードが取得できるかチェック（NullPointerException対策）
+            // 学生が存在し、かつ先生と同じ学校かチェック
             if (student != null && student.getSchool() != null && 
                 student.getSchool().getCd().equals(teacher.getSchool().getCd())) {
                 
                 req.setAttribute("student", student);
 
+                // 成績リストの取得
                 TestListStudentDao tlsDao = new TestListStudentDao();
                 List<TestListStudent> tests = tlsDao.filter(student);
                 
+                // JSP側の名前 "${tests_student}" に合わせる
+                req.setAttribute("tests_student", tests);
+
                 if (tests != null && !tests.isEmpty()) {
-                    // --- ここから統計情報の計算 ---
                     int max = -1;
                     int min = 101;
                     int sum = 0;
@@ -48,7 +50,7 @@ public class TestListStudentExecuteAction extends Action {
 
                     for (TestListStudent t : tests) {
                         int p = t.getPoint();
-                        if (p >= 0) { // 点数が有効な場合のみ計算
+                        if (p >= 0) { 
                             if (p > max) max = p;
                             if (p < min) min = p;
                             sum += p;
@@ -58,17 +60,13 @@ public class TestListStudentExecuteAction extends Action {
 
                     if (count > 0) {
                         double avg = (double) sum / count;
-                        req.setAttribute("avg", String.format("%.1f", avg)); // 小数点1位まで
+                        // 四捨五入して小数点1位まで
+                        req.setAttribute("avg", String.format("%.1f", avg)); 
                         req.setAttribute("max", max);
                         req.setAttribute("min", min);
                     }
-                    // --- 統計情報計算ここまで ---
                 }
-
-                req.setAttribute("tests_student", tests);
-                
             } else {
-                // 学生が見つからない、または学校が異なる、またはSchool情報が欠損している場合
                 req.setAttribute("errors", "学生情報が存在しませんでした");
             }
         } else {

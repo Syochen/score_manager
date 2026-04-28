@@ -6,7 +6,7 @@
         <section>
             <h2 class="h3 mb-3">成績参照</h2>
             
-            <%-- --- 科目情報のフォーム（変更なし） --- --%>
+            <%-- --- 科目情報のフォーム --- --%>
             <div class="bg-light p-3 border rounded mb-3">
                 <form action="TestList.action" method="get">
                     <div class="row g-3 align-items-center">
@@ -48,14 +48,13 @@
                 </form>
             </div>
 
-            <%-- --- 学生情報のフォーム（requiredを追加） --- --%>
-            <div class="bg-light p-3 border rounded">
+            <%-- --- 学生情報のフォーム --- --%>
+            <div class="bg-light p-3 border rounded text-dark">
                 <form action="TestList.action" method="get">
                     <div class="row g-3 align-items-center">
                         <div class="col-auto">学生情報</div>
                         <div class="col-6">
                             <label class="form-label">学生番号</label>
-                            <%-- ここに required を追加 --%>
                             <input type="text" name="f4" class="form-control" 
                                    placeholder="学生番号を入力してください" value="${f4}" required>
                         </div>
@@ -69,10 +68,10 @@
                 </form>
             </div>
 
-            <%-- --- 検索結果・メッセージ表示エリア --- --%>
+            <%-- --- 検索結果表示エリア --- --%>
             <div class="mt-4">
                 <c:choose>
-                    <%-- 1. 科目別検索結果の表示 --%>
+                    <%-- 1. 科目別検索結果 --%>
                     <c:when test="${not empty done_sj}">
                         <c:choose>
                             <c:when test="${not empty tests_subject}">
@@ -88,6 +87,7 @@
                                             <tr>
                                                 <td>${test.entYear}</td><td>${test.classNum}</td>
                                                 <td>${test.studentNo}</td><td>${test.studentName}</td>
+                                                <%-- 科目別でも60点未満を赤くしたい場合はここに条件を追加可能 --%>
                                                 <td>${test.points[1] != null ? test.points[1] : "-"}</td>
                                                 <td>${test.points[2] != null ? test.points[2] : "-"}</td>
                                             </tr>
@@ -101,7 +101,7 @@
                         </c:choose>
                     </c:when>
 
-                    <%-- 2. 学生別検索結果の表示 --%>
+                    <%-- 2. 学生別検索結果 --%>
                     <c:when test="${not empty done_st}">
                         <c:choose>
                             <c:when test="${not empty student && not empty tests_student}">
@@ -114,13 +114,36 @@
                                     </thead>
                                     <tbody>
                                         <c:forEach var="test" items="${tests_student}">
-                                            <tr>
-                                                <td>${test.subjectName}</td><td>${test.subjectCd}</td>
-                                                <td>${test.num}</td><td>${test.point == -1 ? "-" : test.point}</td>
+                                            <%-- 点数が0以上かつ60点未満の場合に背景を赤く(table-danger)する --%>
+                                            <tr class="${test.point >= 0 && test.point < 60 ? 'table-danger' : ''}">
+                                                <td>${test.subjectName}</td>
+                                                <td>${test.subjectCd}</td>
+                                                <td>${test.num}</td>
+                                                <td>${test.point == -1 ? "-" : test.point}</td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>
                                 </table>
+
+                                <%-- 統計情報の表示エリア --%>
+                                <c:if test="${not empty avg}">
+                                    <div class="mt-3 p-3 bg-white border rounded">
+                                        <div class="row text-center">
+                                            <div class="col">
+                                                <small class="text-muted d-block">平均点</small>
+                                                <span class="h4">${avg}</span><small>点</small>
+                                            </div>
+                                            <div class="col border-start">
+                                                <small class="text-muted d-block">最高点</small>
+                                                <span class="h4">${max}</span><small>点</small>
+                                            </div>
+                                            <div class="col border-start">
+                                                <small class="text-muted d-block">最低点</small>
+                                                <span class="h4">${min}</span><small>点</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:if>
                             </c:when>
                             <c:otherwise>
                                 <p>成績情報が存在しませんでした</p>

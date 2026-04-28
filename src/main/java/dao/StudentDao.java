@@ -120,6 +120,11 @@ public class StudentDao extends Dao {
             student.setEntYear(rSet.getInt("ent_year"));
             student.setClassNum(rSet.getString("class_num"));
             student.setAttend(rSet.getBoolean("is_attend"));
+            
+            
+            School school = new School();
+            school.setCd(rSet.getString("school_cd"));
+            student.setSchool(school);
         } else {
             student = null;
         }
