@@ -1,5 +1,5 @@
 package dao;
-
+ 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,14 +10,13 @@ import bean.School;
 import bean.Student;
 import bean.Subject;
 import bean.Test;
-
+ 
 public class TestDao extends Dao {
     private String baseSql = "select * from test where school_cd=? ";
-
+ 
     public List<Test> filter(int entYear, String classNum, Subject subject, int num, School school) throws Exception {
         List<Test> list = new ArrayList<>();
         Connection conn = getConnection();
-        // 入学年度とクラス番号で学生を絞り込み、その成績を結合するSQL
         String sql = "select s.no, s.name, t.point from student s " +
                      "left join test t on s.no = t.student_no and t.subject_cd = ? and t.no = ? " +
                      "where s.ent_year = ? and s.class_num = ? and s.school_cd = ? order by s.no asc";
@@ -35,19 +34,18 @@ public class TestDao extends Dao {
                 s.setName(rs.getString("name"));
                 t.setStudent(s);
                 t.setPoint(rs.getInt("point"));
-                if (rs.wasNull()) t.setPoint(-1); // 未受験
+                if (rs.wasNull()) t.setPoint(-1);
                 list.add(t);
             }
         } finally { conn.close(); }
         return list;
     }
-
+ 
     public boolean save(List<Test> list, School school) throws Exception {
         Connection conn = getConnection();
         try {
             for (Test test : list) {
-                // 点数が空文字（-1）でなければ保存処理（MERGE文等の利用が一般的）
-                String sql = "replace into test (student_no, subject_cd, school_cd, no, point, class_num) values (?, ?, ?, ?, ?, ?)";
+                String sql = "merge into test key (student_no, subject_cd, school_cd, no) values (?, ?, ?, ?, ?, ?)";
                 try (PreparedStatement st = conn.prepareStatement(sql)) {
                     st.setString(1, test.getStudent().getNo());
                     st.setString(2, test.getSubject().getCd());

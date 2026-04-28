@@ -11,6 +11,8 @@
 
         <div class="mt-4">
             <a href="TestRegist.action" class="btn btn-link">戻る</a>
+            
+            <a href="TestList.action" style="margin-left: 20px;">成績参照</a>
         </div>
     </div>
 </c:set>
