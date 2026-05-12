@@ -59,6 +59,6 @@ public class TestListSubjectExecuteAction extends Action {
 
         // 共通データの準備をしてJSPへ
         TestListAction.prepareCommonData(req, teacher);
-        req.getRequestDispatcher("test_list.jsp").forward(req, res);
+        req.getRequestDispatcher("test_list_subject.jsp").forward(req, res);
     }
 }
