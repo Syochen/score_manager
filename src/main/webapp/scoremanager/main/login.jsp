@@ -13,14 +13,15 @@
                     <form action="LoginExecute.action" method="post">
                         <div class="mb-3">
                             <label class="form-label text-secondary small" for="id">ＩＤ</label>
+                            <%-- value="${id}" を追加して、エラー時に値を保持するように修正 --%>
                             <input class="form-control bg-light-blue" type="text" id="id" name="id" 
-                                   placeholder="admin" required>
+                                   placeholder="admin" maxlength="10" value="${id}" required>
                         </div>
                         
                         <div class="mb-3">
                             <label class="form-label text-secondary small" for="password">パスワード</label>
                             <input class="form-control bg-light-blue" type="password" id="password" name="password" 
-                                   placeholder="･･････" required>
+                                   placeholder="･･････" maxlength="30" required>
                         </div>
 
                         <div class="form-check d-flex justify-content-center mb-4">
@@ -42,7 +43,6 @@
             </div>
         </div>
 
-        <%-- パスワード表示切り替えの簡易スクリプト --%>
         <script>
             document.getElementById('show-password').addEventListener('change', function() {
                 const passInput = document.getElementById('password');
@@ -51,7 +51,6 @@
         </script>
 
         <style>
-            /* 入力欄の色を画像っぽく少し青みがかった色にする場合 */
             .bg-light-blue {
                 background-color: #eef4ff !important;
             }
