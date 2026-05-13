@@ -1,49 +1,70 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <c:import url="/common/base.jsp">
-    <c:param name="title">
-        科目変更 - 得点管理システム
-    </c:param>
-
+    <%-- STDM0021: 固定値画面タイトル --%>
+    <c:param name="title">得点管理システム</c:param>
+    
     <c:param name="content">
         <section class="me-4">
-            <%-- 見出し：背景グレーの「科目情報変更」 --%>
-            <h2 class="h4 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報変更</h2>
+            <h2 class="h3 mb-3 fw-normal">学生情報登録</h2>
             
-            <form action="SubjectUpdateExecute.action" method="post">
-                <%-- 科目コード：表示用テキスト --%>
-                <div class="mb-2">
-                    <label class="form-label">科目コード</label>
-                    <div class="py-1">${subject.cd}</div>
-                    <input type="hidden" name="cd" value="${subject.cd}">
-                </div>
-
-                <%-- ★エラーメッセージ表示エリア（オレンジ色） --%>
-                <c:if test="${not empty errors}">
-                    <div class="mb-3">
-                        <c:forEach var="error" items="${errors}">
-                            <span style="color: #ffc107;">${error.value}</span><br>
-                        </c:forEach>
-                    </div>
-                </c:if>
-
-                <%-- 科目名入力：データがない場合は入力不可にする等の制御も可能 --%>
+            <form action="StudentCreateExecute.action" method="post">
                 <div class="mb-3">
-                    <label class="form-label">科目名</label>
-                    <input type="text" class="form-control" name="name" 
-                           value="${subject.name}" required 
-                           <c:if test="${empty subject}">disabled</c:if>>
+                    <%-- STDM0022: 固定値入学年度 --%>
+                    <label class="form-label">入学年度</label>
+                    <%-- STDM0023: 年リストをセレクトボックスに表示 --%>
+                    <select class="form-select" name="ent_year" required>
+                        <option value="">選択してください</option>
+                        <c:forEach var="year" items="${ent_year_set}">
+                            <%-- 入力戻りの年度と一致したら選択状態にする --%>
+                            <option value="${year}" <c:if test="${year == ent_year}">selected</c:if>>${year}</option>
+                        </c:forEach>
+                    </select>
+                    <c:if test="${!empty errors.ent_year}">
+                        <div class="text-danger">${errors.ent_year}</div>
+                    </c:if>
                 </div>
 
-                <%-- 変更ボタン：データがない場合は非表示か無効化 --%>
-                <c:if test="${not empty subject}">
-                    <button type="submit" class="btn btn-primary">変更</button>
-                </c:if>
+                <div class="mb-3">
+                    <%-- STDM0024: 固定値学生番号 --%>
+                    <label class="form-label">学生番号</label>
+                    <%-- STDM0025: 最大文字数10、必須、案内表示、入力値保持 --%>
+                    <%-- value="${no}" を追加 --%>
+                    <input type="text" class="form-control" name="no" value="${no}" 
+                           placeholder="学生番号を入力してください" maxlength="10" required>
+                    <c:if test="${!empty errors.no}">
+                        <div class="text-danger">${errors.no}</div>
+                    </c:if>
+                </div>
+
+                <div class="mb-3">
+                    <%-- STDM0026: 固定値氏名 --%>
+                    <label class="form-label">氏名</label>
+                    <%-- STDM0027: 最大文字数30、必須、案内表示、入力値保持 --%>
+                    <%-- value="${name}" を追加 --%>
+                    <input type="text" class="form-control" name="name" value="${name}" 
+                           placeholder="氏名を入力してください" maxlength="30" required>
+                </div>
+
+                <div class="mb-3">
+                    <%-- STDM0028: 固定値クラス --%>
+                    <label class="form-label">クラス</label>
+                    <%-- STDM0029: クラス番号リストを表示 --%>
+                    <select class="form-select" name="class_num">
+                        <c:forEach var="num" items="${class_num_set}">
+                            <%-- 入力戻りのクラスと一致したら選択状態にする --%>
+                            <option value="${num}" <c:if test="${num == class_num}">selected</c:if>>${num}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <%-- STDM00210: 学生登録完了画面に遷移するボタン --%>
+                <button type="submit" class="btn btn-primary">登録して終了</button>
                 
-                <%-- 戻るリンク --%>
+                <%-- STDM00211: 学生管理一覧画面に遷移する戻るリンク --%>
                 <div class="mt-3">
-                    <a href="SubjectList.action" class="text-decoration-none" style="font-size: 0.9rem;">戻る</a>
+                    <a href="StudentList.action">戻る</a>
                 </div>
             </form>
         </section>

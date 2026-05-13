@@ -3,13 +3,13 @@
 
 <c:import url="/common/base.jsp">
     <c:param name="title">
-        科目登録完了 - 得点管理システム
+        学生登録完了 - 得点管理システム
     </c:param>
 
     <c:param name="content">
         <section class="me-4">
             <%-- ① 見出しを登録画面と合わせる --%>
-            <h2 class="h4 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報登録</h2>
+            <h2 class="h4 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">学生情報登録</h2>
             
             <%-- ② 緑色の完了メッセージバー --%>
             <div class="alert alert-success py-2" role="alert">
@@ -18,10 +18,10 @@
 
             <div class="mt-4 d-flex">
                 <%-- ③ 戻るリンク --%>
-                <a href="SubjectCreate.action" class="text-decoration-none me-4">戻る</a>
+                <a href="StudentCreate.action" class="text-decoration-none me-4">戻る</a>
                 
                 <%-- ④ 科目一覧リンク --%>
-                <a href="SubjectList.action" class="text-decoration-none">科目一覧</a>
+                <a href="StudentList.action" class="text-decoration-none">学生一覧</a>
             </div>
         </section>
     </c:param>

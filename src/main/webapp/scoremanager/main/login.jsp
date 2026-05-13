@@ -15,13 +15,13 @@
                             <label class="form-label text-secondary small" for="id">ＩＤ</label>
                             <%-- value="${id}" を追加して、エラー時に値を保持するように修正 --%>
                             <input class="form-control bg-light-blue" type="text" id="id" name="id" 
-                                   placeholder="admin" maxlength="10" value="${id}" required>
+                                   placeholder="半角でご入力ください" maxlength="10" value="${id}" required>
                         </div>
                         
                         <div class="mb-3">
                             <label class="form-label text-secondary small" for="password">パスワード</label>
                             <input class="form-control bg-light-blue" type="password" id="password" name="password" 
-                                   placeholder="･･････" maxlength="30" required>
+                                   placeholder="30文字以内の半角英数字でご入力ください" maxlength="30" required>
                         </div>
 
                         <div class="form-check d-flex justify-content-center mb-4">

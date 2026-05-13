@@ -2,56 +2,63 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <c:import url="/common/base.jsp">
+    <%-- STDM0041: 固定値画面タイトル --%>
     <c:param name="title">得点管理システム</c:param>
+    
     <c:param name="content">
         <section class="me-4">
             <h2 class="h3 mb-3 fw-normal">学生情報変更</h2>
             
             <form action="StudentUpdateExecute.action" method="post">
-                <%-- 入学年度：画像に合わせてシンプルな表示に --%>
                 <div class="mb-3">
-                    <p class="mb-1">入学年度</p>
-                    <div class="ms-2">${student.entYear}</div>
+                    <%-- STDM0042: 固定値項目タイトル(入学年度) --%>
+                    <label class="form-label text-secondary small">入学年度</label>
+                    <%-- STDM0043: readonlyで表示。枠を目立たせない設定 --%>
+                    <input type="text" class="form-control-plaintext ps-2" name="ent_year" value="${student.entYear}" readonly>
                 </div>
-                
-                <%-- 学生番号：表示用と送信用(hidden) --%>
+
                 <div class="mb-3">
-                    <p class="mb-1">学生番号</p>
-                    <div class="ms-2">${student.no}</div>
-                    <input type="hidden" name="no" value="${student.no}">
+                    <%-- STDM0044: 固定値項目タイトル(学生番号) --%>
+                    <label class="form-label text-secondary small">学生番号</label>
+                    <%-- STDM0045: readonlyで表示。ここも枠なし --%>
+                    <input type="text" class="form-control-plaintext ps-2" name="no" value="${student.no}" readonly>
                 </div>
-                
-                <%-- 氏名 --%>
+
                 <div class="mb-3">
-                    <label class="form-label" for="name-input">氏名</label>
-                    <input type="text" id="name-input" name="name" class="form-control" 
-                           value="${student.name}" placeholder="氏名を入力してください" 
-                           style="max-width: 600px;" required>
+                    <%-- STDM0046: 固定値項目タイトル(氏名) --%>
+                    <label class="form-label">氏名</label>
+                    <%-- STDM0047: 最大文字数30、必須入力指定 --%>
+                    <input type="text" class="form-control" name="name" value="${student.name}" 
+                           placeholder="氏名を入力してください" maxlength="30" required>
+                    <c:if test="${!empty errors.name}">
+                        <div class="text-danger small">${errors.name}</div>
+                    </c:if>
                 </div>
-                
-                <%-- クラス --%>
+
                 <div class="mb-3">
+                    <%-- STDM0048: 固定値項目タイトル(クラス) --%>
                     <label class="form-label">クラス</label>
-                    <select class="form-select" name="class_num" style="max-width: 600px;">
+                    <%-- STDM0049: クラス番号リストを表示 --%>
+                    <select class="form-select" name="class_num">
                         <c:forEach var="num" items="${class_num_set}">
                             <option value="${num}" <c:if test="${num == student.classNum}">selected</c:if>>${num}</option>
                         </c:forEach>
                     </select>
                 </div>
-                
-                <%-- 在学中チェックボックス --%>
-                <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" name="is_attend" id="is_attend" 
-                           value="true" <c:if test="${student.attend}">checked</c:if>>
+
+                <div class="form-check mb-4">
+                    <%-- STDM00410: 固定値在学中、STDM00411: 在学中チェックボックス --%>
+                    <input class="form-check-input" type="checkbox" name="is_attend" id="is_attend"
+                           <c:if test="${student.isAttend()}">checked</c:if>>
                     <label class="form-check-label" for="is_attend">在学中</label>
                 </div>
+
+                <%-- STDM00412: 変更ボタン --%>
+                <button type="submit" class="btn btn-primary px-4">変更</button>
                 
-                <%-- ボタンとリンク：画像のデザインを再現 --%>
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-primary px-3 mb-2">変更</button>
-                    <div>
-                        <a href="StudentList.action" class="text-decoration-none">戻る</a>
-                    </div>
+                <%-- STDM00413: 戻るリンク --%>
+                <div class="mt-3">
+                    <a href="StudentList.action" class="text-decoration-none">戻る</a>
                 </div>
             </form>
         </section>
