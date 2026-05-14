@@ -23,7 +23,13 @@
             </div>
 
             <div class="mt-4">
-                <p>氏名：${student.name} (${student.no})</p>
+    <%-- 1. まず学生情報を表示（studentが空でないなら必ず出す） --%>
+    <c:if test="${not empty student}">
+        <label class="form-label">氏名：${student.name} (${student.no})</label>
+
+        <c:choose>
+            <%-- 2. 成績データがある場合：テーブルと統計を表示 --%>
+            <c:when test="${not empty tests_student}">
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -39,15 +45,13 @@
                                 <td>${test.subjectName}</td>
                                 <td>${test.subjectCd}</td>
                                 <td>${test.num}</td>
-                                <td>
-                                    ${test.point == -1 ? "-" : test.point}
-                                </td>
+                                <td>${test.point == -1 ? "-" : test.point}</td>
                             </tr>
                         </c:forEach>
                     </tbody>
                 </table>
 
-                <%-- ★統計情報エリア★ --%>
+                <%-- 統計情報：平均点がある場合のみ表示 --%>
                 <c:if test="${not empty avg}">
                     <div class="mt-3 p-3 bg-white border rounded">
                         <div class="row text-center">
@@ -66,7 +70,18 @@
                         </div>
                     </div>
                 </c:if>
-            </div>
+            </c:when>
+
+            <%-- 3. 学生はいるが、成績データが空の場合 --%>
+            <c:otherwise>
+                <p>成績情報が存在しませんでした</p>
+            </c:otherwise>
+        </c:choose>
+    </c:if>
+
+
+</div>
+             
 
             <div class="mt-3">
                 <a href="TestList.action">戻る</a>
