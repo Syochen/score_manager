@@ -56,7 +56,7 @@
                         <div class="col-6">
                             <label class="form-label">学生番号</label>
                             <input type="text" name="f4" class="form-control" 
-                                   placeholder="学生番号を入力してください" value="${f4}"maxlength="10" required>
+                                   placeholder="学生番号を入力してください" value="${f4}"maxlength= required>
                         </div>
                         <div class="col-auto mt-auto">
                             <button type="submit" name="f" value="st" class="btn btn-secondary">検索</button>

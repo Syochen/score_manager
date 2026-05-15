@@ -59,7 +59,7 @@
             <div class="mt-4">
                 <c:choose>
                     <c:when test="${not empty tests_subject}">
-                        <p>科目：${subject.name}</p>
+                         <label class="form-label">科目：${subject.name}</label>
                         <table class="table table-hover">
                             <thead>
                                 <tr>
