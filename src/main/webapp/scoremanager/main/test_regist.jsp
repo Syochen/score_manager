@@ -15,7 +15,6 @@
         <div class="alert alert-danger">${errors}</div>
     </c:if>
  
-    <%-- 修正：actionを相対パス（パッケージ名なし）に変更 --%>
     <form action="TestRegist.action" method="post" class="search-form bg-light">
         <div class="search-item">
             <label>入学年度</label>
@@ -64,7 +63,6 @@
             <p class="fw-bold">科目：${subject.name} (${param.f4}回)</p>
             
             <form action="TestRegistExecute.action" method="post">
-                <%-- 条件を引き継ぐためのhidden --%>
                 <input type="hidden" name="f1" value="${param.f1}">
                 <input type="hidden" name="f2" value="${param.f2}">
                 <input type="hidden" name="f3" value="${param.f3}">
@@ -88,9 +86,12 @@
                                 <td>${t.student.no}</td>
                                 <td>${t.student.name}</td>
                                 <td>
+                                    <%-- ここを修正：独自メッセージを追加 --%>
                                     <input type="number" name="point_${t.student.no}"
                                            value="<c:if test="${t.point != -1}">${t.point}</c:if>"
-                                           class="form-control form-control-sm point-input" min="0" max="100">
+                                           class="form-control form-control-sm point-input" min="0" max="100"
+                                           oninvalid="this.setCustomValidity('0～100の範囲で入力してください')"
+                                           oninput="this.setCustomValidity('')">
                                 </td>
                             </tr>
                         </c:forEach>
