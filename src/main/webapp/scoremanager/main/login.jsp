@@ -30,10 +30,16 @@
                                 パスワードを表示
                             </label>
                         </div>
-
-                        <c:if test="${!empty errors}">
-                            <div class="text-danger text-center small mb-3">${errors}</div>
-                        </c:if>
+						
+						<c:if test="${!empty errors}">
+						    <div class="text-danger small mb-3">
+						        <ul class="mb-0" style="list-style-position: inside; padding-left: 0; text-align: center;">
+						            <c:forEach var="error" items="${errors}">
+						                <li><c:out value="${error}" /></li>
+						            </c:forEach>
+						        </ul>
+						    </div>
+						</c:if>
 
                         <div class="text-center">
                             <button class="btn btn-primary px-5 py-2" id="login-button">ログイン</button>

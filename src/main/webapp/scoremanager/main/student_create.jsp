@@ -14,7 +14,7 @@
                     <%-- STDM0022: 固定値入学年度 --%>
                     <label class="form-label">入学年度</label>
                     <%-- STDM0023: 年リストをセレクトボックスに表示 --%>
-                    <select class="form-select" name="ent_year">
+                    <select class="form-select" name="ent_year" required>
                         <option value="">選択してください</option>
                         <c:forEach var="year" items="${ent_year_set}">
                             <%-- 入力戻りの年度と一致したら選択状態にする --%>
