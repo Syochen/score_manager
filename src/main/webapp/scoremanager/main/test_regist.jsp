@@ -11,10 +11,6 @@
  
     <h2 class="mb-4">成績管理</h2>
  
-    <c:if test="${not empty errors}">
-        <div class="alert alert-danger">${errors}</div>
-    </c:if>
- 
     <form action="TestRegist.action" method="post" class="search-form bg-light">
         <div class="search-item">
             <label>入学年度</label>
@@ -62,7 +58,7 @@
         <div class="mt-4">
             <p class="fw-bold">科目：${subject.name} (${param.f4}回)</p>
             
-            <form action="TestRegistExecute.action" method="post">
+            <form id="registForm" action="TestRegistExecute.action" method="post">
                 <input type="hidden" name="f1" value="${param.f1}">
                 <input type="hidden" name="f2" value="${param.f2}">
                 <input type="hidden" name="f3" value="${param.f3}">
@@ -86,12 +82,15 @@
                                 <td>${t.student.no}</td>
                                 <td>${t.student.name}</td>
                                 <td>
-                                    <%-- ここを修正：独自メッセージを追加 --%>
+                                   
                                     <input type="number" name="point_${t.student.no}"
-                                           value="<c:if test="${t.point != -1}">${t.point}</c:if>"
-                                           class="form-control form-control-sm point-input" min="0" max="100"
-                                           oninvalid="this.setCustomValidity('0～100の範囲で入力してください')"
-                                           oninput="this.setCustomValidity('')">
+									       value="<c:if test="${t.point != -1}">${t.point}</c:if>"
+									       class="form-control form-control-sm point-input"
+									       oninput="this.setCustomValidity('')"
+									       <c:if test="${not empty errors}">
+									           oninvalid="this.setCustomValidity('${errors}')"
+									           data-has-error="true"
+									       </c:if>>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -100,6 +99,27 @@
                 <button type="submit" class="btn btn-primary mt-3">登録して終了</button>
             </form>
         </div>
+    </c:if>
+
+    <%-- サーバーから戻ってきた時に自動で吹き出しを開くためのスクリプト --%>
+    <c:if test="${not empty errors}">
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // エラーの原因となった入力欄を特定
+                const errorInputs = document.querySelectorAll('input[data-has-error="true"]');
+                
+                // 一旦すべての入力欄をエラー(invalid)状態に設定
+                errorInputs.forEach(function(input) {
+                    input.setCustomValidity('${errors}');
+                });
+                
+                // フォームのreportValidityメソッドを呼ぶことで、ブラウザ標準の吹き出しを強制表示させる
+                const form = document.getElementById("registForm");
+                if (form) {
+                    form.reportValidity();
+                }
+            });
+        </script>
     </c:if>
 </c:set>
  
