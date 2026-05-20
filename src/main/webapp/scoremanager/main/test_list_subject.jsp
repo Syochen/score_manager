@@ -41,7 +41,9 @@
                             <label class="form-label">科目</label>
                             <select name="f3" class="form-select">
                                 <option value="">--------</option>
-                                <c:forEach var="sub" items="${subject_set}">
+                                <%-- ★修正点：itemsを Java側と合わせて "subjects" に変更したよ --%>
+                                <c:forEach var="sub" items="${subjects}">
+                                    <%-- ★修正点：選択状態をキープできるように判定条件を合わせたよ --%>
                                     <option value="${sub.cd}" <c:if test="${sub.cd == f3}">selected</c:if>>
                                         ${sub.name}
                                     </option>
@@ -91,7 +93,6 @@
                                         <td>${test.classNum}</td>
                                         <td>${test.studentNo}</td>
                                         <td>${test.studentName}</td>
-                                        <%-- ★修正点：Beanに用意されている getPoint(キー) メソッドを使って確実に値を呼ぶよ --%>
                                         <td>
                                             <c:out value="${test.getPoint(1)}" />
                                         </td>
