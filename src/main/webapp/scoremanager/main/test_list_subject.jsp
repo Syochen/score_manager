@@ -7,7 +7,7 @@
         <section class="me-4">
             <h2 class="h3 mb-3">成績参照（科目）</h2>
 
-            <%-- 科目情報のフォーム：学生フォームは出さない --%>
+            <%-- 科目情報のフォーム --%>
             <div class="bg-light p-3 border rounded mb-4">
                 <form action="TestList.action" method="get">
                     <div class="row g-3 align-items-center">
@@ -41,34 +41,47 @@
                             <label class="form-label">科目</label>
                             <select name="f3" class="form-select">
                                 <option value="">--------</option>
-                                <c:forEach var="subject" items="${subjects}">
-                                    <option value="${subject.cd}" <c:if test="${subject.cd == f3}">selected</c:if>>
-                                        ${subject.name}
+                                <c:forEach var="sub" items="${subject_set}">
+                                    <option value="${sub.cd}" <c:if test="${sub.cd == f3}">selected</c:if>>
+                                        ${sub.name}
                                     </option>
                                 </c:forEach>
                             </select>
                         </div>
 
-                        <div class="col-auto mt-auto">
-                            <button type="submit" name="f" value="sj" class="btn btn-secondary">検索</button>
+                        <input type="hidden" name="f" value="sj">
+
+                        <div class="col-auto align-self-end">
+                            <button type="submit" class="btn btn-primary px-4">検索</button>
                         </div>
                     </div>
                 </form>
             </div>
 
+            <%-- エラーメッセージ表示 --%>
+            <c:if test="${not empty errors}">
+                <div class="alert alert-danger py-2" role="alert">
+                    ${errors}
+                </div>
+            </c:if>
+
+            <%-- 検索結果の表示エリア --%>
             <div class="mt-4">
+                <h3 class="h5 mb-3">
+                    科目：<c:out value="${subject.name}" />
+                </h3>
+
                 <c:choose>
                     <c:when test="${not empty tests_subject}">
-                         <label class="form-label">科目：${subject.name}</label>
-                        <table class="table table-hover">
-                            <thead>
+                        <table class="table table-hover border">
+                            <thead class="table-light">
                                 <tr>
                                     <th>入学年度</th>
                                     <th>クラス</th>
                                     <th>学生番号</th>
                                     <th>氏名</th>
-                                    <th>1回</th>
-                                    <th>2回</th>
+                                    <th>1回目</th>
+                                    <th>2回目</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,11 +91,12 @@
                                         <td>${test.classNum}</td>
                                         <td>${test.studentNo}</td>
                                         <td>${test.studentName}</td>
+                                        <%-- ★修正点：Beanに用意されている getPoint(キー) メソッドを使って確実に値を呼ぶよ --%>
                                         <td>
-                                            <c:out value="${test.points.get(1) != null && test.points.get(1) != -1 ? test.points.get(1) : '-'}" />
+                                            <c:out value="${test.getPoint(1)}" />
                                         </td>
                                         <td>
-                                            <c:out value="${test.points.get(2) != null && test.points.get(2) != -1 ? test.points.get(2) : '-'}" />
+                                            <c:out value="${test.getPoint(2)}" />
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -101,4 +115,3 @@
         </section>
     </c:param>
 </c:import>
- 
