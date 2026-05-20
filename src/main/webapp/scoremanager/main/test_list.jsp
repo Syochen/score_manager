@@ -49,25 +49,24 @@
             </div>
 
             <%-- --- 学生情報のフォーム --- --%>
-            <div class="bg-light p-3 border rounded text-dark">
-                <form action="TestList.action" method="get">
-                    <div class="row g-3 align-items-center">
-                        <div class="col-auto">学生情報</div>
-                        <div class="col-6">
-                            <label class="form-label">学生番号</label>
-                            <input type="text" name="f4" class="form-control" 
-                                   placeholder="学生番号を入力してください" value="${f4}"maxlength= required>
-                        </div>
-                        <div class="col-auto mt-auto">
-                            <button type="submit" name="f" value="st" class="btn btn-secondary">検索</button>
-                        </div>
-                    </div>
-                    <c:if test="${not empty errors && not empty f4}">
-                        <div class="mt-2 text-warning" style="margin-left: 80px;">${errors}</div>
-                    </c:if>
-                </form>
+           <div class="bg-light p-3 border rounded text-dark">
+    <form action="TestList.action" method="get">
+        <div class="row g-3 align-items-center">
+            <div class="col-auto">学生情報</div>
+            <div class="col-6">
+                <label class="form-label">学生番号</label>
+                <input type="text" name="f4" class="form-control" 
+                       placeholder="学生番号を入力してください" value="${f4}" maxlength="10" required>
             </div>
-
+            <div class="col-auto mt-auto">
+                <button type="submit" name="f" value="st" class="btn btn-secondary">検索</button>
+            </div>
+        </div>
+        <c:if test="${not empty errors && not empty f4}">
+            <div class="mt-2 text-warning" style="margin-left: 80px;">${errors}</div>
+        </c:if>
+    </form>
+</div>
             <%-- --- 検索結果表示エリア --- --%>
             <div class="mt-4">
                 <c:choose>
