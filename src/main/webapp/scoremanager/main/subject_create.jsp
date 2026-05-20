@@ -16,7 +16,7 @@
                 <div class="mb-3">
                     <label class="form-label">科目コード</label>
                     <input type="text" class="form-control" name="cd" 
-                           placeholder="科目コードを入力してください" value="${cd}" required>
+                           placeholder="科目コードを入力してください" value="${cd}"  maxlength="3" required>
                     
                     <%-- 
                          画像①・②の再現：エラーメッセージをオレンジ色で表示 
@@ -31,7 +31,7 @@
                 <div class="mb-3">
                     <label class="form-label">科目名</label>
                     <input type="text" class="form-control" name="name" 
-                           placeholder="科目名を入力してください" value="${name}" required>
+                           placeholder="科目名を入力してください" value="${name}"  maxlength="20" required>
                 </div>
 
                 <%-- 登録ボタン --%>

@@ -32,7 +32,7 @@
                 <div class="mb-3">
                     <label class="form-label">科目名</label>
                     <input type="text" class="form-control" name="name" 
-                           value="${subject.name}" required 
+                           value="${subject.name}"  maxlength="20" required 
                            <c:if test="${empty subject}">disabled</c:if>>
                 </div>
 
